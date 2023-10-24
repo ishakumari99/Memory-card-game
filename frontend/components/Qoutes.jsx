@@ -4,7 +4,7 @@ import QouteCard from './QouteCard';
 import CreateQoute from "./CreateQoute";
 
 const Quotes = () => {
-    const [qoute] = useCanister("qoute");
+    const [qoute] = useCanister("qoute", { mode: "anonymous" });
     const [quotes, setQuotes] = useState([]);
     const { isConnected } = useConnect() 
 
