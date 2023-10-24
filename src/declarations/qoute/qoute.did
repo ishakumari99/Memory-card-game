@@ -1,0 +1,56 @@
+type Time = int;
+type Result_2 = 
+ variant {
+   err: CreateQouteError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: DeleteQouteError;
+   ok;
+ };
+type Result = 
+ variant {
+   err: GetQouteError;
+   ok: Qoute;
+ };
+type QouteId = nat;
+type Qoute = 
+ record {
+   author: principal;
+   like: bool;
+   published: bool;
+   qoute_text: text;
+   tags: vec text;
+   theme: text;
+   time_created: Time;
+   time_updated: Time;
+ };
+type GetQouteError = variant {QouteNotFound;};
+type DeleteQouteError = variant {UserNotAuthenticated;};
+type CreateQouteError = 
+ variant {
+   EmptyTitle;
+   QouteNotFound;
+   UserNotAuthenticated;
+ };
+service : {
+  create:
+   (record {
+      like: bool;
+      published: bool;
+      qoute_text: text;
+      tags: vec text;
+      theme: text;
+    }) -> (Result_2);
+  delete: (QouteId) -> (Result_1);
+  get: (QouteId) -> (Result) query;
+  list_all: () -> (vec record {
+                         QouteId;
+                         Qoute;
+                       }) query;
+  list_published: () -> (vec record {
+                               QouteId;
+                               Qoute;
+                             }) query;
+}
